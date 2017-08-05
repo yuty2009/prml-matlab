@@ -1,0 +1,79 @@
+统计工具箱包含5个与隐马尔可夫模型相关的函数：
+ hmmgenerate 从一个马尔可夫模型产生一个状态序列和输出序列；
+ hmmestimate 计算转移和输出的极大似然估计；
+ hmmtrain 从一个输出序列计算转移和输出概率的极大似然估计；
+ hmmviterbi 计算一个隐马尔可夫模型最可能的状态变化过程；
+ hmmdecode 计算一个给定输出序列的后验状态概率。
+ 
+下面部分介绍如何使用这些函数来分析隐马尔可夫模型。
+ 
+1. 产生一个测试序列
+ 
+下面代码产生上面简介中模型的转移和输出矩阵：
+ TRANS = [.9 .1; .05 .95;];
+ EMIS = [1/6, 1/6, 1/6, 1/6, 1/6, 1/6;...
+ 7/12, 1/12, 1/12, 1/12, 1/12, 1/12];
+ 
+要从模型产生一个随机的状态序列和输出序列，使用hmmgenerate：
+ [seq,states] = hmmgenerate(1000,TRANS,EMIS);
+ 
+输出中，seq是输出序列，states是状态序列。hmmgenerate在第0步从状态1开始，在第一步转移到状态i1
+ ，并返回i1作为状态的第一个入口。
+ 
+2. 估计状态序列
+ 
+给定了转移和输出矩阵TRANS和EMIS，函数hmmviterbi使用Viterbi算法计算模型给定输出序列seq最有可能
+ 通过的状态序列：
+ likelystates = hmmviterbi(seq, TRANS, EMIS);
+ 
+likelystates是和seq一样长的序列。计算hmmvertibi的精度如下：
+ sum(states == likelystates) / length(states)
+ ans =
+     0.8680
+ 
+3. 估计转移和输出矩阵
+ 函数hmmestimate和hmmtrain用于估计给定输出序列seq的转移和输出矩阵TRANS和EMIS。
+ 
+使用hmmestimate
+ [TRANS_EST, EMIS_EST] = hmmestimate(seq, states)
+ TRANS_EST =
+     0.9065    0.0935
+     0.0406    0.9594
+ EMIS_EST =
+     0.1452    0.1516    0.1581    0.1968    0.1581    0.1903
+     0.5841    0.0754    0.0986    0.0812    0.0841    0.0768
+ 由上面使用方式可知，hmmestimate函数需要事先知道了得到输出序列seq，以及得到此结果的状态变化序
+ 列。
+ 
+使用hmmtrain
+ 如果不知道状态序列，但是知道TRANS和EMIS的初始猜测，那就可以使用hmmtrain来估计TRANS和EMIS。
+ 
+假设已知如下初始猜测：
+ TRANS_GUESS = [.85 .15; .1 .9];
+ EMIS_GUESS = [.17 .16 .17 .16 .17 .17;.6 .08 .08 .08 .08 08];
+ 
+TRANS和EMIS的估计如下：
+ [TRANS_EST2, EMIS_EST2] = hmmtrain(seq, TRANS_GUESS, EMIS_GUESS)
+ TRANS_EST2 =
+     0.9207    0.0793
+     0.0370    0.9630
+ EMIS_EST2 =
+     0.1792    0.1437    0.1436    0.1855    0.1509    0.1971
+     0.5774    0.0775    0.1042    0.0840    0.0859    0.0710
+ 
+hmmtrain使用迭代算法来不断修改TRANS_GUESS和EMIS_GUESS，使得每一步修改得到的矩阵都更加可能产生观测序列seq。当前后两个两次迭代矩阵的变化在一个小的容错范围内时，迭代停止。如果算法无法达到容错的范围，则迭代到达一定次数时就会停止，并返回一个警告提示。默认的最大迭代次数为100。
+ 
+如果算法达不到目标误差范围，则可以通过增加迭代次数和/或加大容错误差值来使其获得较合适结果：
+ 改变迭代次数maxiter：hmmtrain(seq,TRANS_GUESS,EMIS_GUESS,'maxiterations',maxiter)
+ 改变容错误差tol：hmmtrain(seq, TRANS_GUESS, EMIS_GUESS, 'tolerance', tol)
+ 
+影响hmmtrain输出的矩阵可靠性的两点因素：
+ （1）算法收敛于局部极值，这点可以使用不同的初始猜测矩阵来尝试解决；
+ （2）序列seq太短而无法很好的训练矩阵，可以尝试使用较长的序列。
+ 
+4. 估计后验状态概率（不太理解）
+ 一个输出序列seq的后验状态概率是在特定状态下的模型产生在seq中一个输出的条件概率。假定seq已经给出，你可以使用hmmdecode得到后验状态概率。
+ 
+PSTATES = hmmdecode(seq,TRANS,EMIS)
+ 
+输出为一个M * N的矩阵。M是状态的个数，L是seq的长度。PSTATES(i, j)是模型在状态i时，产生seq第j个输出的条件概率。
