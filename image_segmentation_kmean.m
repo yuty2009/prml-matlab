@@ -1,7 +1,7 @@
 clc
 clear
 
-im = imread('image_segmentation_raw_1.bmp');
+im = imread('image_segmentation_raw_2.bmp');
 X = zeros(size(im,1)*size(im,2), size(im,3));
 for i = 1:size(im,1)
     for j = 1:size(im,2)
@@ -9,7 +9,7 @@ for i = 1:size(im,1)
     end
 end
 
-k = 10;
+k = 50;
 [idx,ctrs] = kmeans(X, k);
 ctrs = uint8(ctrs);
 for i = 1:size(im,1)

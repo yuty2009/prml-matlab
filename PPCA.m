@@ -40,6 +40,7 @@ while (d_W > stopeps)  && (it < maxit)
     it = it + 1;
 end
 
-varargout{1} = W;
+% orthogonalize W to get a unique solution (PRML pp. 575
+varargout{1} = W; % orth(W); 
 if nargout > 1, varargout{2} = mu; end
 if nargout > 2, varargout{3} = sigma2; end

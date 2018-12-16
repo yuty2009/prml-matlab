@@ -1,16 +1,23 @@
 clc
 clear
+addpath(genpath('D:\research\document\machinelearning\Pattern_Recognition_and_Machine_Learning\PRML-master'))
 
 D = 10;
 N = 300;
 MU = zeros(D,1);
-SIGMA = diag([0.1,1,0.1,1,0.1,0.1,1,0.1,0.1,0.1]);
+SIGMA = diag([0.5,1.0,0.5,1.0,0.5,0.5,1.0,0.5,0.5,0.5]);
 X = mvnrnd(MU,SIGMA,N);
 
-PC1 = PCA(X);
-PC2 = PPCA(X);
-PC3 = BPCA(X);
+% PC11 = PCA(X);
+% PC12 = pca(X', D);
+% PC21 = PPCA(X);
+% PC22 = ppcaEm(X', D);
+PC31 = bardpca(X);
+% model = ppcaVb(X', D); PC32 = model.W;
 
-hinton(PC1);
-hinton(PC2);
-hinton(PC3);
+% hinton(PC11);
+% hinton(PC12);
+% hinton(PC21);
+% hinton(PC22);
+hinton(PC31);
+% hinton(PC32);

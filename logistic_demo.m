@@ -25,7 +25,7 @@ y123 = [ones(N1,1); -ones(N2+N3,1)];
 
 %% train with two clusters
 [W_lda1, b_lda1] = FLDA(y12,X12);
-[W_log1, b_log1] = logistic2(y12,X12);
+[W_log1, b_log1] = logistic1(y12,X12);
 svmoption = ['-s 0 -t 0 -c 1 -g 0.001'];
 model1 = svmtrain(y12, X12, svmoption);
 W_svm1 = model1.SVs' * model1.sv_coef;
@@ -33,7 +33,7 @@ b_svm1 = -model1.rho;
 
 %% train with three clusters
 [W_lda2, b_lda2] = FLDA(y123,X123);
-[W_log2, b_log2] = logistic2(y123,X123);
+[W_log2, b_log2] = logistic1(y123,X123);
 model2 = svmtrain(y123, X123, svmoption);
 W_svm2 = model2.SVs' * model2.sv_coef;
 b_svm2 = -model2.rho;

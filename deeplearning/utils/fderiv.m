@@ -12,6 +12,8 @@ switch(func)
         Y = 1.7159 * 2/3 * (1 - 1/(1.7159)^2 * Y1.^2);
     case 'ReLU'
         Y = Y1 > 0;
+    case 'softmax'
+        Y = ones(size(Y1));
     otherwise
         disp('unknown transfer function');
 end

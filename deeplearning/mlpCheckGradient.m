@@ -4,7 +4,7 @@ clear;
 batch_x = rand(20, 5);
 batch_y = rand(20, 2);
 
-for output = {'linear','sigmoid','softmax'}
+for output = {'softmax'} % {'linear','sigmoid','softmax'}
     disp(['output function = ' output{1}]);
     
     y = batch_y;

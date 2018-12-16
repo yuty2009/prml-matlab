@@ -3,7 +3,7 @@
 % [U0 S0 V0] = svd(B)
 % ev are the eigenvalues of (B'*A*B)
 % the computation is efficient when M >> N
-function [U1, EV] = myeig(U0, S0, A)
+function [U1, EV] = myeigex(U0, S0, A)
 
 [N, M] = size(S0); % S0 has the same size as B
 

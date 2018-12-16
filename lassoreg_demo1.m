@@ -34,9 +34,9 @@ lambda = 1e-2;
 % [w0,b0] = blassoreg(y1, PHI1);
 % [w1,b1] = blassoreg2(y1, PHI1);
 %% Bayes ARD regularization
-% [w1,b1] = bardreg(y1, PHI1);
+[w1,b1] = bardreg(y1, PHI1);
 %% Variational Bayes linear regression
-[w1,b1] = bvarsreg(y1, PHI1);
+% [w1,b1] = vbayesreg(y1, PHI1);
 %% Bayes elastic net regularization
 % [w1,b1] = benetreg(y1, PHI1);
 

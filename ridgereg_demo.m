@@ -16,7 +16,7 @@ order = 9;
 idx1 = randi(N, [1, N]);
 x1 = t(idx1);
 y1 = sin(2*pi*x1) + sigma*randn(N,1);
-PHI1 = basis(x1, order);
+PHI1 = basispoly(x1, order);
 
 %% train model
 lambda = 0.01;
@@ -26,13 +26,13 @@ lambda = 0.01;
 idx2 = randi(N, [1, N]);
 x2 = t(idx2);
 y2 = sin(2*pi*x2) + sigma*randn(N,1);
-PHI2 = basis(x2, order);
+PHI2 = basispoly(x2, order);
 
 %% predict
 py = PHI2*w + b;
 % py = kridgereg(y1, PHI1, PHI2, lambda, 'poly', 5, 0);
 
-PHIt = basis(t, order);
+PHIt = basispoly(t, order);
 pt = PHIt*w + b;
 % pt = kridgereg(y1, PHI1, PHIt, lambda, 'poly', 5, 0);
 

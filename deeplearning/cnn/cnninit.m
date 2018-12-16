@@ -7,7 +7,7 @@ inputmaps = 1;
 mapsize = inshape(1:end-1); % input dimension >= 3 is allowed
 assert(inshape(end)==outshape(end), ...
     ['The number of samples and labels should be the same but actual' ...
-    'samples: ' num2str(inshape(1)) ' vs labels: ' num2str(outshape(1))]);
+    'samples: ' num2str(inshape(end)) ' vs labels: ' num2str(outshape(end))]);
 
 cnn.NL = numel(cnn.layers);
 for L = 2:cnn.NL

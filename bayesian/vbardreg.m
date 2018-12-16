@@ -5,7 +5,7 @@
 % X: N by P design matrix with N samples of M features
 % t: N by 1 target values 
 % w: P+1 by 1 weight vector
-function [varargout] = bvarsreg(y,X)
+function [varargout] = vbardreg(y,X)
 
 % add a constant column to cope with bias
 PHI = cat(2, ones(size(X,1),1), X);
