@@ -9,7 +9,7 @@
 %        4 group with 3 members in each
 % b: P by 1 weight vector
 % b0: the intercept
-function [varargout] = bardgrouplog(t, X, group)
+function [varargout] = bgardlog(t, X, group)
 
 % add a constant column to cope with bias
 PHI = cat(2, ones(size(X,1),1), X);

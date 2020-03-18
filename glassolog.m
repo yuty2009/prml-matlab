@@ -10,7 +10,7 @@
 %        4 group with 3 members in each
 % b: P by 1 weight vector
 % b0: bias
-function [varargout] = lassogrouplog(t,X,group,lambda)
+function [varargout] = glassolog(t,X,group,lambda)
 
 if nargin < 4, lambda = 1e-4; end
 

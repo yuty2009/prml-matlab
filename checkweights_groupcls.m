@@ -40,7 +40,7 @@ rr = rsquare(y,X);
 % load('classification_gaussian');
 
 %% perform crossvalidation
-methods = {'bardloggroup','bardloggroup'};
+methods = {'bardlog','bardgrouplog'};
 % methods = {'logistic','loglasso','loggrouplasso','bayeslog','bardlog','bardgrouplog'};
 numMethods = length(methods);
 

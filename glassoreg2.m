@@ -10,7 +10,7 @@
 % y: N by 1 target vector
 % b: P by 1 regression coefficients
 % b0: the intercept
-function [varargout] = lassogroupreg2(y,X,group,lambda)
+function [varargout] = glassoreg2(y,X,group,lambda)
 
 if nargin < 4, lambda = 1e-4; end
 

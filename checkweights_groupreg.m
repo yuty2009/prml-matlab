@@ -29,8 +29,7 @@ y = X*w0 + sigma*randn(N,1);
 % load('regression_gaussian');
 
 %% perform crossvalidation
-methods = {'benet'};
-% methods = {'ridge','lasso','lassogroup','bayes','bard','bardgroup'};
+methods = {'ridge','lasso','glasso','bard','bgard'};
 numMethods = length(methods);
 
 XTrain = X;
@@ -65,8 +64,8 @@ for m = 1:numMethods
             lasso = lassoreg(yTrain, XTrain, 10^(-4));
             model = lasso;
             ws(:,m) = model.b;
-        case 'lassogroup'
-            lassogroup1 = lassogroupreg(yTrain, XTrain, NG, 10^(-5));
+        case 'glasso'
+            lassogroup1 = glassoreg(yTrain, XTrain, NG, 10^(-5));
             model = lassogroup1;
             ws(:,m) = model.b;
         case 'enet'
@@ -81,16 +80,16 @@ for m = 1:numMethods
             bard = bardreg(yTrain, XTrain);
             model = bard;
             ws(:,m) = model.b;
-        case 'bardgroup'
-            bardgroup = bardgroupreg(yTrain, XTrain, NG);
+        case 'bgard'
+            bardgroup = bgardreg(yTrain, XTrain, NG);
             model = bardgroup;
             ws(:,m) = model.b;
-        case 'bvarsgroup'
-            bvarsgroup = bvarsgroupreg(yTrain, XTrain, NG);
+        case 'vbgard'
+            bvarsgroup = vbgardreg(yTrain, XTrain, NG);
             model = bvarsgroup;
             ws(:,m) = model.b;
-        case 'blassogroup'
-            blassogroup = blassogroupreg(yTrain, XTrain, NG);
+        case 'bglasso'
+            blassogroup = bglassoreg(yTrain, XTrain, NG);
             model = blassogroup;
             ws(:,m) = model.b;
         case 'benet'

@@ -1,37 +1,43 @@
 %% Probabilistic PCA
 %  X: N observation by P variables
+%  m: dimension of target space
 %  The model is:
 %   z ~ N(0,I) % unit covariance to eliminate scaling indeterminancy
 %   n ~ N(0,sigma^2*I) % n is independent of the latent variable z
 %   x = W*z + mu + n
 %   Psi is diagnal
 %  Optimization via EM algorithm according to PRML Page 578
-function varargout = PPCA(X)
+function varargout = PPCA(X, m)
 
 [N,P] = size(X);
 
 % subtract off the mean for each observation
-mu = mean(X)';
-X0 = X - repmat(mu',N,1);
+mu = mean(X);
+X0 = X - repmat(mu,N,1);
 
 % initialize W and sigma randomly
-sigma2 = 0.01;
-W = randn(P);
+W = randn(P, m);
+sigma2 = 1/randg;
 
-stopeps = 1e-6;
+RXX = dot(X0(:),X0(:)); % total norm of X
+I = eye(m);
+stopeps = 1e-8;
 d_W = Inf;
 maxit = 500;
 it = 1;
 while (d_W > stopeps)  && (it < maxit)
     Wold = W;
     % E step, calculate posterior
-    invM = (W'*W + eye(P)*sigma2)^(-1); % NC by NC
-    EZ = invM*W'*X0'; % NC by N
-    EZZ = N*sigma2*invM + EZ*EZ'; % NC by NC
+    invM = (W'*W + sigma2*I)^(-1); % m by m
+    EZ = invM*W'*X0'; % m by N (12.54)
+    EZZ = N*sigma2*invM + EZ*EZ'; % m by m (12.55)
 
     % M step, maximize the expectation
-    W = X0'*EZ'*EZZ^(-1); % P by NC
-    sigma2 = (1/(N*P))*trace(X0'*X0 - 2*W*EZ*X0 + EZZ*W'*W); % P by P
+    W = X0'*EZ'/EZZ; % P by m (12.56)
+    U = chol(EZZ); % m by m
+    WR = W*U'; % P by m
+    WX = W'*X0'; % m by N
+    sigma2 = (RXX - 2*dot(EZ(:),WX(:)) + dot(WR(:),WR(:)))/(N*P); % P by P (12.57)
     
     d_W = W - Wold;
     d_W = norm(d_W)/norm(Wold);
