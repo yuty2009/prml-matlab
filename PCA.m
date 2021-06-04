@@ -13,10 +13,11 @@ X0 = X - repmat(mX,N,1);
 if (N >= P)
     %% it may cause out of memory by calculation of covariance
     % calculate the covariance matrix
-    covX = (X0'*X0)/N;
+    covX = (X0'*X0)/(N-1);
     [PC,S,V] = svd(covX);
 else
     [dummy,D,PC] = svd(X0);
+    PC = PC'
     D2 = D.^2;
     M = min([N,P]);
     S = zeros(P);

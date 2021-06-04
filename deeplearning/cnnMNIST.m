@@ -18,7 +18,7 @@ cnn.dropout = 0.75;
 
 opts.verbose = 'on';
 opts.batchsize = 50;
-opts.maxepochs = 50000;
+opts.maxsteps = 50000;
 opts.reportsteps = 100;
 opts.savesteps = 10000;
 opts.savepath = 'models/';
@@ -33,7 +33,7 @@ cnn = cnninit(cnn, outshape, inshape);
 tic;
 lr_start = 5e-3;
 cnn.rL = [];
-for i = 1:opts.maxepochs
+for i = 1:opts.maxsteps
     [batch_X, batch_y] = train.nextbatch(opts.batchsize, true);
     batch_X = permute(batch_X, [2,3,1]);
     batch_y = batch_y';
@@ -57,7 +57,7 @@ for i = 1:opts.maxepochs
         toc;
         if isfield(opts,'verbose') && strcmpi(opts.verbose,'on')
             fprintf('Step=%d/%d, lr=%.4f, loss=%.4f, training accuracy=%g\n', ...
-                i, opts.maxepochs, opts.lr, cnn.loss, train_acc);
+                i, opts.maxsteps, opts.lr, cnn.loss, train_acc);
         end
         tic;
     end
