@@ -40,6 +40,11 @@ while (d_w > stopeps) && (i <= maxit)
     
     %% E step (IRLS update)
     y = 1./(1+exp(-PHI*w)); % predicted target value
+    yis0 = y==0;
+    yis1 = y==1;
+    y(yis0) = y(yis0)+1e-9;
+    y(yis1) = y(yis1)-1e-9;
+    
     diagR = y.*(1-y);
     R = diag(y.*(1-y)); % the variance matrix of target value
     invR = diag(1./diagR);
